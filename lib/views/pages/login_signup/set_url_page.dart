@@ -25,7 +25,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
   var _media;
   final _formKey = GlobalKey<FormState>();
   final urlController = TextEditingController();
-  String dropdownValue = 'HTTP';
+  String dropdownValue = 'http';
   Preferences _pref = Preferences();
   String orgUrl, orgImgUrl;
   String saveMsg = "Set URL";
@@ -64,7 +64,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
       setApiUrl();
       _setURL();
     } catch (e) {
-      _exceptionToast('Incorrect Organization Entered');
+      _errorScaffold('Incorrect Organization URL Entered');
     }
 
     setState(() {
@@ -77,7 +77,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
       orgUrl =
           "${dropdownValue.toLowerCase()}://${urlController.text}/";
       orgImgUrl =
-          "${dropdownValue.toLowerCase()}://${urlController.text}/talawa/";
+          "${dropdownValue.toLowerCase()}://${urlController.text}/";
     });
     await _pref.saveOrgUrl(orgUrl);
     await _pref.saveOrgImgUrl(orgImgUrl);
@@ -89,37 +89,57 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
     });
   }
 
-  _exceptionToast(String msg) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.red,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Text(
-              msg,
-              style: TextStyle(fontSize: 15.0, color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
+  // _exceptionToast(String msg) {
+  //   Widget toast = Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(15.0),
+  //       color: Colors.red,
+  //     ),
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Expanded(
+  //           child: Text(
+  //             msg,
+  //             style: TextStyle(fontSize: 15.0, color: Colors.white),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   fToast.showToast(
+  //     child: toast,
+  //     gravity: ToastGravity.BOTTOM,
+  //     toastDuration: Duration(seconds: 5),
+  //   );
+  // }
 
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 5),
+  //Created Snack bar for displaying errors
+  _errorScaffold(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontSize: 15.0, color: Colors.white,fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        action: SnackBarAction(
+          label: "OK",
+          textColor: Colors.white,
+          onPressed: (){
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
     );
   }
 
-
-
-    void assignAnimation(bool firstTime) {
+  void assignAnimation(bool firstTime) {
     if (!firstTime) {
       animation = Tween(begin: 1.0, end: 1.0).animate(controller);
 
@@ -179,185 +199,169 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
     assignAnimation(first);
     load();
     Widget mainScreen() {
-      return new Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FadeTransition(
             opacity: animation,
             child: Container(
               //padding: EdgeInsets.all(100.0),
-              padding: EdgeInsets.symmetric(vertical: 50.0),
+              padding: EdgeInsets.fromLTRB(0,50,0,0),
               child: Center(child: Image(image: AssetImage(UIData.talawaLogo))),
             ),
           ),
-          new Container(
-            //container with login and sign up button
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
-
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  width: _media != null
-                      ? _media.size.width
-                      : MediaQuery.of(context).size.width,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          FadeTransition(
-                            opacity: helloAnimation,
-                            child: Container(
-                              child: Text(
-                                "TALAWA",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 60,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      FadeTransition(
-                        opacity: helloAnimation,
-                        child: Container(
-                          child: Text(
-                            ".",
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 60,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+          Container(
+            width: _media != null
+                ? _media.size.width
+                : MediaQuery.of(context).size.width,
+            child: FadeTransition(
+              opacity: helloAnimation,
+              child: Center(
+                child: Text(
+                  "Talawa",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 60,
                   ),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+              ),
+            ),
+          ),
+          Container(
+            //container with login,url and sign up button
+            padding: EdgeInsets.fromLTRB(0, 30, 0, 50),
+            child: Column(
+              children: <Widget>[
                 FadeTransition(
                   opacity: createAnimation,
                   child: Container(
-                    child: Container(
-                      width: _media != null
-                          ? _media.size.width
-                          : MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.only(
-                          left: 20.0, right: 30.0, top: 10.0),
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: <Widget>[
-                              DropdownButton<String>(
-                                value: dropdownValue,
-                                icon: Icon(Icons.arrow_downward,
-                                    color: Colors.orange),
-                                iconSize: 24,
-                                elevation: 16,
-                                style: TextStyle(color: UIData.primaryColor),
-                                underline: Container(
-                                  height: 2,
-                                  color: UIData.primaryColor,
+                    width: _media != null
+                        ? _media.size.width
+                        : MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(left: 20.0, right: 30.0, top: 10.0),
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: <Widget>[
+                            Theme(
+                              data: Theme.of(context).copyWith(
+                                canvasColor: Colors.black,
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue;
-                                    saveMsg = 'Set URL';
-                                  });
-                                },
-                                items: <String>[
-                                  'HTTP',
-                                  'HTTPS'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Form(
-                                    key: _formKey,
-                                    child: TextFormField(
-                                      keyboardType: TextInputType.url,
-                                      validator: (value) =>
-                                          Validator.validateURL(
-                                              urlController.text),
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(color: Colors.white),
-                                      decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.white),
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.orange),
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                        ),
-                                        prefixIcon: Icon(Icons.web,
-                                            color: Colors.white),
-                                        labelText: "Type Org URL Here",
-                                        labelStyle:
-                                            TextStyle(color: Colors.white),
-                                        alignLabelWithHint: true,
-                                        hintText: 'calico.palisadoes.org',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey),
-                                      ),
-                                      controller: urlController,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
+                                child: DropdownButton<String>(  //http dropdown menu
+                                  value: dropdownValue,
+                                  icon: Icon(Icons.arrow_drop_down_circle_rounded,
+                                      color: Colors.white),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.white,
                                   ),
-                                  child: isUrlCalled
-                                      ? SizedBox(
-                                          height: 14,
-                                          width: 14,
-                                          child: CircularProgressIndicator(
-                                              backgroundColor: Colors.white),
-                                        )
-                                      : Text(
-                                          saveMsg,
-                                        ),
-                                  //color: Colors.white,
-                                  onPressed: () async {
-                                    FocusScope.of(context).unfocus();
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-
-                                      await checkAndSetUrl();
-                                    }
-                                  }),
-                            ],
-                          ),
-                        ],
-                      ),
+                                  style: TextStyle(color: Colors.white,fontSize: 18),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                      saveMsg = 'Set URL';
+                                    });
+                                  },
+                                  items: <String>[
+                                    'http',
+                                    'https'
+                                  ].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded( // org url form field
+                              child: Form(
+                                  key: _formKey,
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.url,
+                                    validator: (value) =>
+                                        Validator.validateURL(
+                                            urlController.text),
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(color: Colors.white),
+                                    decoration: InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white,width: 5),
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.white,width: 3),
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                      ),
+                                      prefixIcon: Icon(Icons.add_link,
+                                          color: Colors.white,size: 30,),
+                                      labelText: "Type Organization URL Here",
+                                      labelStyle:
+                                          TextStyle(color: Colors.white),
+                                     // alignLabelWithHint: true,
+                                      hintText: 'www.organisation.com',
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey),
+                                    ),
+                                    controller: urlController,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row( // set url button
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                                 style: ElevatedButton.styleFrom(
+                                   primary: Colors.black.withOpacity(0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    side: BorderSide(color: Colors.white,width: 4),
+                                  ),
+                                ),
+                                child: isUrlCalled
+                                    ? SizedBox(
+                                        height: 14,
+                                        width: 14,
+                                        child: CircularProgressIndicator(
+                                            backgroundColor: Colors.white),
+                                      )
+                                    : Text(
+                                        saveMsg,
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  ),
+                                      ),
+                                //color: Colors.white,
+                                onPressed: () async {
+                                  FocusScope.of(context).unfocus();
+                                  if (_formKey.currentState.validate()) {
+                                    _formKey.currentState.save();
+                                    await checkAndSetUrl();
+                                  }
+                                }),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -368,68 +372,62 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                   //changed opacity animation to match login button animation
                   opacity: loginAnimation,
                   child: Container(
-                    //padding: EdgeInsets.all(100.0),
-                    child: new Container(
-                      width: _media != null
-                          ? _media.size.width
-                          : MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.only(
-                          left: 50.0, right: 50.0, top: 10.0),
-                      alignment: Alignment.center,
-                      child: new Row(
-                        children: <Widget>[
-                          new Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
+                    width: _media != null
+                        ? _media.size.width
+                        : MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(
+                        left: 50.0, right: 50.0, top: 10.0),
+                    alignment: Alignment.center,
+                    child: Row(
+                      children: <Widget>[
+                         Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.black.withOpacity(0),
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                side: BorderSide(color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,width: 5)
                               ),
-                              onPressed: saveMsg != "URL SAVED!"
-                                  ? null
-                                  : () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RegisterPage()),
-                                        );
-                                      }
-                                    },
-                              child: new Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 20.0,
-                                  horizontal: 20.0,
-                                ),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.orange),
-                                    borderRadius:
-                                        new BorderRadius.circular(50.0)),
-                                child: new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    new Expanded(
-                                      child: Text(
-                                        "Create an Account",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          //color: UIData.quitoThemeColor,
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          //fontWeight: FontWeight.bold
-                                        ),
-                                      ),
+                            ),
+                            onPressed: saveMsg != "URL SAVED!"
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterPage()),
+                                      );
+                                    }
+                                  },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20.0,
+                                horizontal: 20.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Icon(Icons.add,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,size: 26),
+                                  Text(
+                                    "Create an Account",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Icon(Icons.add,color: Colors.white.withOpacity(0),size: 26), //adding icon for symmetry
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -437,66 +435,63 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                 FadeTransition(
                   opacity: loginAnimation,
                   child: Container(
-                    child: new Container(
-                      width: _media != null
-                          ? _media.size.width
-                          : MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.only(
-                          left: 50.0, right: 50.0, top: 10.0),
-                      alignment: Alignment.center,
-                      child: new Row(
-                        children: <Widget>[
-                          new Expanded(
-                            child: new ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
+                    width: _media != null
+                        ? _media.size.width
+                        : MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.only(
+                        left: 50.0, right: 50.0, top: 10.0),
+                    alignment: Alignment.center,
+                    child:  Row(
+                      children: <Widget>[
+                         Expanded(
+                          child:  ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary:  Colors.black.withOpacity(0),
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                side: BorderSide(color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,width: 5)
                               ),
-                              onPressed: saveMsg != "URL SAVED!"
-                                  ? null
-                                  : () async {
-                                      if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage()));
-                                      }
-                                    },
-                              child: new Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 20.0,
-                                  horizontal: 20.0,
-                                ),
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.orange),
-                                    borderRadius:
-                                        new BorderRadius.circular(50.0)),
-                                child: new Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    new Expanded(
-                                      child: Text(
-                                        "Login",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          //color: UIData.quitoThemeColor,
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          //fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            onPressed: saveMsg != "URL SAVED!"
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()));
+                                    }
+                                  },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20.0,
+                                horizontal: 20.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Icon(Icons.login,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,size: 26,),
+                                   Text(
+                                     "Login",
+                                     textAlign: TextAlign.center,
+                                     style: TextStyle(
+                                       //color: UIData.quitoThemeColor,
+                                       color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,
+                                       fontSize: 20,
+                                       fontWeight: FontWeight.w600,
+                                       //fontWeight: FontWeight.bold
+                                     ),
+                                   ),
+                                  Icon(Icons.login,color: Colors.white.withOpacity(0),size: 26), //adding icon for symmetry
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
