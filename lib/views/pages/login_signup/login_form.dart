@@ -257,16 +257,21 @@ class LoginFormState extends State<LoginForm> {
                   child: _progressBarState
                       ? Center(child: const CircularProgressIndicator(backgroundColor: Colors.black,))
                       : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                           // Image(image: AssetImage("assets/Icons/google-logo.png"),fit: BoxFit.cover,),
+                            Image(
+                              image: AssetImage("assets/Icons/google-logo.png"),
+                              fit: BoxFit.cover,
+                            ),
                             Text(
                               "Sign In with Google",
                               style: TextStyle(
                                 color: Colors.white,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                          //  Image(image: AssetImage("assets/Icons/google-logo.png"), fit: BoxFit.cover,color:Colors.white.withOpacity(0)),
                           ],
                         ),
                   //color: Colors.white,

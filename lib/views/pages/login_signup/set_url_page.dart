@@ -6,6 +6,7 @@ import 'package:talawa/utils/validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:talawa/views/pages/login_signup/login_page.dart';
 import 'package:talawa/views/pages/login_signup/register_page.dart';
+import 'package:talawa/views/pages/login_signup/sign_up_page.dart';
 
 class UrlPage extends StatefulWidget {
   @override
@@ -398,8 +399,8 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegisterPage()),
+                                            builder: (context) => SignUpPage()),
+                                               // RegisterPage()),
                                       );
                                     }
                                   },
