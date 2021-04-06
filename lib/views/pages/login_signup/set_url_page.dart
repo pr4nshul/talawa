@@ -383,7 +383,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                          Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.black.withOpacity(0),
+                              primary: Colors.black12,
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
@@ -421,7 +421,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Icon(Icons.add,color: Colors.white.withOpacity(0),size: 26), //adding icon for symmetry
+                                  Icon(Icons.add,color:Colors.white.withOpacity(0),size: 26), //icon for symmetry
                                 ],
                               ),
                             ),
@@ -442,55 +442,56 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                         left: 50.0, right: 50.0, top: 10.0),
                     alignment: Alignment.center,
                     child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                          Expanded(
-                          child:  ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary:  Colors.black.withOpacity(0),
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                                side: BorderSide(color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,width: 5)
-                              ),
-                            ),
-                            onPressed: saveMsg != "URL SAVED!"
-                                ? null
-                                : () async {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()));
-                                    }
-                                  },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 20.0,
-                                horizontal: 20.0,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Icon(Icons.login,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,size: 26,),
-                                   Text(
-                                     "Login",
-                                     textAlign: TextAlign.center,
-                                     style: TextStyle(
-                                       //color: UIData.quitoThemeColor,
-                                       color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,
-                                       fontSize: 20,
-                                       fontWeight: FontWeight.w600,
-                                       //fontWeight: FontWeight.bold
-                                     ),
-                                   ),
-                                  Icon(Icons.login,color: Colors.white.withOpacity(0),size: 26), //adding icon for symmetry
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                           child: ElevatedButton(
+                             style: ElevatedButton.styleFrom(
+                               primary:  Colors.black12,
+                               padding: EdgeInsets.zero,
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(15.0),
+                                 side: BorderSide(color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,width: 5)
+                               ),
+                             ),
+                             onPressed: saveMsg != "URL SAVED!"
+                                 ? null
+                                 : () async {
+                                     if (_formKey.currentState.validate()) {
+                                       _formKey.currentState.save();
+                                       Navigator.push(
+                                           context,
+                                           MaterialPageRoute(
+                                               builder: (context) =>
+                                                   LoginPage()));
+                                     }
+                                   },
+                             child: Container(
+                               padding: const EdgeInsets.symmetric(
+                                 vertical: 20.0,
+                                 horizontal: 20.0,
+                               ),
+                               child: Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                 children: <Widget>[
+                                   Icon(Icons.login,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,size: 26,),
+                                    Text(
+                                      "Login",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        //color: UIData.quitoThemeColor,
+                                        color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        //fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                   Icon(Icons.email_outlined ,color: Colors.white.withOpacity(0),size: 26), //adding icon for symmetry
+                                 ],
+                               ),
+                             ),
+                           ),
+                         ),
                       ],
                     ),
                   ),

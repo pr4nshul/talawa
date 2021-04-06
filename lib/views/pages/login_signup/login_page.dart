@@ -31,49 +31,51 @@ class _LoginScreenState extends State<LoginPage> with TickerProviderStateMixin {
 
   loginScreenForm() => Center(
         child: Container(
-          alignment: const AlignmentDirectional(0.0, 0.0),
-          child: Container(
-              constraints: const BoxConstraints(
-                  maxWidth: 300.0, minWidth: 250.0, minHeight: 300.0),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: <Widget>[
-                    LoginForm(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          "Dont have an account?",
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
+            constraints: const BoxConstraints(
+                maxWidth: 300.0, minWidth: 250.0, minHeight: 300.0),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    //padding: EdgeInsets.all(100.0),
+                    padding: EdgeInsets.fromLTRB(0,50,0,0),
+                    child: Center(child: Image(image: AssetImage(UIData.talawaLogo))),
+                  ),
+                  LoginForm(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        "Don't have an account?",
+                        style: const TextStyle(
+                          color: Colors.white,
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RegisterPage()));
-                            },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 2.0),
+                          child: TextButton(
+
                             child: const Text(
-                              "SIGN UP!",
-                              textAlign: TextAlign.start,
-                              style:
-                                  const TextStyle(color: UIData.primaryColor),
-                            ),
-                          ),
+                                  "SIGN UP!",
+                                  textAlign: TextAlign.start,
+                                  style:
+                                      const TextStyle(color: Colors.white,decoration: TextDecoration.underline),
+                                ),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterPage()));
+                              },
                         ),
-                      ],
-                    )
-                  ],
-                ),
-              )),
-        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )),
       );
   //main build starts here
   @override

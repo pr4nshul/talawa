@@ -64,20 +64,20 @@ class LoginFormState extends State<LoginForm> {
       setState(() {
         _progressBarState = false;
       });
-      _exceptionToast(
-          'Connection Error. Make sure your Internet connection is stable');
+      _errorScaffold(
+          'Connection Error. Make sure you are Online!');
     } else if (result.hasException) {
       print(result.exception);
       setState(() {
         _progressBarState = false;
       });
 
-      _exceptionToast(result.exception.toString().substring(16, 35));
+      _errorScaffold(result.exception.toString().substring(16, 35));
     } else if (!result.hasException && !result.loading) {
       setState(() {
         _progressBarState = true;
       });
-      _successToast("All Set!");
+      _successScaffold("Login successful!");
       final Token accessToken =
           new Token(tokenString: result.data['login']['accessToken']);
       await _pref.saveToken(accessToken);
@@ -119,7 +119,7 @@ class LoginFormState extends State<LoginForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            Text('Login', style: TextStyle(fontSize: 35, color: Colors.white)),
+            Text('Login', style: TextStyle(fontSize: 40, color: Colors.white,fontWeight: FontWeight.bold)),
             SizedBox(
               height: 50,
             ),
@@ -132,26 +132,28 @@ class LoginFormState extends State<LoginForm> {
                   textAlign: TextAlign.left,
                   controller: _emailController,
                   validator: Validator.validateEmail,
+
                   style: TextStyle(color: Colors.white),
                   //Changed text input action to next
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
+                    errorStyle: TextStyle(fontSize: 14,backgroundColor: Colors.black54,fontWeight: FontWeight.bold ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: BorderSide(color: Colors.white,width: 5),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.orange),
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: BorderSide(color: Colors.white,width: 3),
+                      borderRadius: BorderRadius.circular(25.0),
                     ),
                     prefixIcon: Icon(
                       Icons.email,
                       color: Colors.white,
                     ),
-                    labelText: "Email",
+                    labelText: "Email ID",
                     labelStyle: TextStyle(color: Colors.white),
                     alignLabelWithHint: true,
-                    hintText: 'foo@bar.com',
+                    hintText: 'user@domain.com',
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                   onSaved: (value) {
@@ -169,19 +171,20 @@ class LoginFormState extends State<LoginForm> {
                   validator: Validator.validatePassword,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
+                    errorStyle: TextStyle(backgroundColor: Colors.black45,fontWeight: FontWeight.bold,fontSize: 14),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: BorderSide(color: Colors.white,width: 5),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.orange),
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: BorderSide(color: Colors.white,width: 3),
+                      borderRadius: BorderRadius.circular(25.0),
                     ),
                     prefixIcon: Icon(
                       Icons.lock,
                       color: Colors.white,
                     ),
-                    suffixIcon: FlatButton(
+                    suffixIcon: TextButton(
                       onPressed: _toggle,
                       child: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -205,18 +208,69 @@ class LoginFormState extends State<LoginForm> {
               height: 20,
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+              padding: EdgeInsets.fromLTRB(30, 10.0, 30.0,5),
               width: double.infinity,
-              child: RaisedButton(
+              child: ElevatedButton(
+                 // padding: EdgeInsets.all(12.0),
+                 // shape: StadiumBorder(),
+                style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(12.0),
-                  shape: StadiumBorder(),
+                   shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(18),
+                   )
+                ),
                   child: _progressBarState
-                      ? const CircularProgressIndicator()
+                      ? Center(child: const CircularProgressIndicator(backgroundColor: Colors.black,))
                       : Text(
                           "SIGN IN",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                         ),
-                  color: Colors.white,
+                  //color: Colors.white,
                   onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    //checks to see if all the fields have been validated then authenticate a user
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                      loginUser();
+                      setState(() {
+                        toggleProgressBarState();
+                      });
+                    }
+                  }),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
+              width: double.infinity,
+              child: ElevatedButton(
+                // padding: EdgeInsets.all(12.0),
+                // shape: StadiumBorder(),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.black.withOpacity(0),
+                      padding: EdgeInsets.all(15.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        side: BorderSide(color: Colors.white,width: 3),
+                      )
+                  ),
+                  child: _progressBarState
+                      ? Center(child: const CircularProgressIndicator(backgroundColor: Colors.black,))
+                      : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                           // Image(image: AssetImage("assets/Icons/google-logo.png"),fit: BoxFit.cover,),
+                            Text(
+                              "Sign In with Google",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                  //color: Colors.white,
+                  onPressed: () async {  // not implemented google sign in flow
                     FocusScope.of(context).unfocus();
                     //checks to see if all the fields have been validated then authenticate a user
                     if (_formKey.currentState.validate()) {
@@ -233,55 +287,94 @@ class LoginFormState extends State<LoginForm> {
   }
 
   //the method called when the result is success
-  _successToast(String msg) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.green,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Center(child: Text(msg)),
-        ],
-      ),
-    );
-
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
-    );
-  }
+  // _successToast(String msg) {
+  //   Widget toast = Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(25.0),
+  //       color: Colors.green,
+  //     ),
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Center(child: Text(msg)),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   fToast.showToast(
+  //     child: toast,
+  //     gravity: ToastGravity.BOTTOM,
+  //     toastDuration: Duration(seconds: 3),
+  //   );
+  // }
 
   //the method called when the result is an exception
-  _exceptionToast(String msg) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.red,
+  // _exceptionToast(String msg) {
+  //   Widget toast = Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(25.0),
+  //       color: Colors.red,
+  //     ),
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Expanded(
+  //             child: Text(
+  //           msg,
+  //           textAlign: TextAlign.center,
+  //         )),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   fToast.showToast(
+  //     child: toast,
+  //     gravity: ToastGravity.BOTTOM,
+  //     toastDuration: Duration(seconds: 5),
+  //   );
+  // }
+  _errorScaffold(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontSize: 15.0, color: Colors.white,fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        action: SnackBarAction(
+          label: "OK",
+          textColor: Colors.white,
+          onPressed: (){
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-              child: Text(
-            msg,
-            textAlign: TextAlign.center,
-          )),
-        ],
-      ),
-    );
-
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 5),
     );
   }
-
+  _successScaffold(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontSize: 15.0, color: Colors.black,fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(milliseconds: 500),
+        backgroundColor: Colors.greenAccent[400],
+        // action: SnackBarAction(
+        //   label: "OK",
+        //   textColor: Colors.white,
+        //   onPressed: (){
+        //     ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        //   },
+        //),
+      ),
+    );
+  }
   //function toggles _obscureText value
   void _toggle() {
     setState(() {
