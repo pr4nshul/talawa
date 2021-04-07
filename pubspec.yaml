@@ -85,6 +85,7 @@ flutter:
   assets:
     - assets/images/
     - assets/Icons/google-logo.png
+    - assets/Icons/add_user.png
 
   # assets:
   #  - images/a_dot_burr.jpeg

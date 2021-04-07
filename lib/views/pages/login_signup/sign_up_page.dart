@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:intl/intl.dart';
 import 'package:talawa/utils/uidata.dart';
 import 'package:talawa/views/pages/login_signup/register_page.dart';
 
@@ -51,7 +50,7 @@ Widget signUpButtons(BuildContext context) {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Icon(Icons.email, color: Colors.white, size: 30),
+                        Icon(Icons.email, color: Colors.white, size: 34,),
                         Text(
                           "Sign Up with Email",
                           style: TextStyle(

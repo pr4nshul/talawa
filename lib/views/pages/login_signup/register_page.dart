@@ -44,7 +44,7 @@ class _RegisterePageState extends State<RegisterPage>
                             child: Text(
                               "SIGN IN!",
                               textAlign: TextAlign.start,
-                              style: TextStyle(color: UIData.primaryColor),
+                              style: TextStyle(color: Colors.white,decoration: TextDecoration.underline),
                             ),
                           ),
                         ),

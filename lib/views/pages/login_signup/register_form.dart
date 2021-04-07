@@ -19,10 +19,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:graphql/utilities.dart' show multipartFileFrom;
 
 //pubspec packages are called here
-import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_password_strength/flutter_password_strength.dart';
-
 import '../_pages.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -168,7 +165,7 @@ class RegisterFormState extends State<RegisterForm> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text('Add Profile Image',
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                      style: TextStyle(fontSize: 18, color: Colors.white,fontWeight: FontWeight.w400,fontStyle: FontStyle.italic)),
                 ),
                 SizedBox(
                   height: 25,
@@ -187,11 +184,11 @@ class RegisterFormState extends State<RegisterForm> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(color: Colors.white,width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(color: Colors.white,width: 2),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           prefixIcon: Icon(Icons.person, color: Colors.white),
@@ -218,14 +215,14 @@ class RegisterFormState extends State<RegisterForm> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(color: Colors.white,width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(color: Colors.white,width:2),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          prefixIcon: Icon(Icons.person, color: Colors.white),
+                          prefixIcon: Icon(Icons.person_pin, color: Colors.white),
                           labelText: "Last Name",
                           labelStyle: TextStyle(color: Colors.white),
                           alignLabelWithHint: true,
@@ -249,11 +246,11 @@ class RegisterFormState extends State<RegisterForm> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(color: Colors.white,width:5),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(color: Colors.white,width: 2),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           prefixIcon: Icon(Icons.email, color: Colors.white),
@@ -279,16 +276,17 @@ class RegisterFormState extends State<RegisterForm> {
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
+                         // errorStyle: TextStyle(backgroundColor: Colors.black87,fontWeight: FontWeight.bold),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(color: Colors.white,width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(color: Colors.white,width: 2),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          prefixIcon: Icon(Icons.lock, color: Colors.white),
-                          suffixIcon: FlatButton(
+                          prefixIcon: Icon(Icons.lock_outline, color: Colors.white),
+                          suffixIcon: TextButton(
                             onPressed: _toggle,
                             child: Icon(
                               _obscureText
@@ -325,6 +323,8 @@ class RegisterFormState extends State<RegisterForm> {
                         uppercaseCharCount: 1,
                         specialCharCount: 1,
                         numericCharCount: 1,
+                        defaultColor: Colors.white,
+                        failureColor: Colors.red,
                         onSuccess: (_) {
                           setState(() {});
                         },
@@ -345,11 +345,11 @@ class RegisterFormState extends State<RegisterForm> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(color: Colors.white,width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.orange),
+                            borderSide: BorderSide(color: Colors.white,width: 2),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           prefixIcon: Icon(Icons.lock, color: Colors.white),
@@ -368,9 +368,13 @@ class RegisterFormState extends State<RegisterForm> {
                   padding:
                       EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
                   width: double.infinity,
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(12.0),
-                    shape: StadiumBorder(),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)
+                      )
+                    ),
                     child: _progressBarState
                         ? const SizedBox(
                             width: 20,
@@ -383,8 +387,10 @@ class RegisterFormState extends State<RegisterForm> {
                             ))
                         : Text(
                             "SIGN UP",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                    color: Colors.white,
                     onPressed: () async {
                       FocusScope.of(context).unfocus();
                       _validate = AutovalidateMode.always;
@@ -417,20 +423,20 @@ class RegisterFormState extends State<RegisterForm> {
               _showPicker(context);
             },
             child: CircleAvatar(
-              radius: 55,
+              radius: 50,
               backgroundColor: UIData.secondaryColor,
               child: _image != null
                   ? CircleAvatar(
-                      radius: 52,
+                      radius: 45,
                       backgroundImage: FileImage(
                         _image,
                       ),
                     )
                   : CircleAvatar(
-                      radius: 52,
+                      radius: 45,
                       backgroundColor: Colors.lightBlue[50],
                       child: Icon(
-                        Icons.camera_alt,
+                        Icons.camera_enhance_rounded,
                         color: Colors.grey[800],
                       ),
                     ),

@@ -5,7 +5,6 @@ import 'package:talawa/utils/uidata.dart';
 import 'package:talawa/utils/validator.dart';
 import 'package:http/http.dart' as http;
 import 'package:talawa/views/pages/login_signup/login_page.dart';
-import 'package:talawa/views/pages/login_signup/register_page.dart';
 import 'package:talawa/views/pages/login_signup/sign_up_page.dart';
 
 class UrlPage extends StatefulWidget {
@@ -412,7 +411,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Icon(Icons.add,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,size: 26),
+                                  Image(image: AssetImage("assets/Icons/add_user.png"),fit: BoxFit.cover,color: saveMsg!= "URL SAVED!"?Colors.grey: Colors.white,height: 32,width: 32,),
                                   Text(
                                     "Create an Account",
                                     textAlign: TextAlign.center,
@@ -422,7 +421,7 @@ class _UrlPageState extends State<UrlPage> with TickerProviderStateMixin<UrlPage
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Icon(Icons.add,color:Colors.white.withOpacity(0),size: 26), //icon for symmetry
+                                  Image(image: AssetImage("assets/Icons/add_user.png"),fit: BoxFit.cover,color: Colors.white.withOpacity(0),height: 32,width: 32,),
                                 ],
                               ),
                             ),
