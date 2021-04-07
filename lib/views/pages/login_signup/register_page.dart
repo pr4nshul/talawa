@@ -65,7 +65,7 @@ class _RegisterePageState extends State<RegisterPage>
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: AssetImage(UIData.cloud1), fit: BoxFit.cover),
+              image: AssetImage(UIData.cloud1), fit: BoxFit.cover,),
         ),
         child: Center(
           child: SingleChildScrollView(

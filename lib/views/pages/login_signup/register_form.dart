@@ -31,8 +31,7 @@ class RegisterForm extends StatefulWidget {
 
 class RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _firstNameController = new TextEditingController();
-  TextEditingController _lastNameController = new TextEditingController();
+  TextEditingController _userNameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _originalPasswordController = new TextEditingController();
   TextEditingController _confirmPasswordController = new TextEditingController();
@@ -76,7 +75,7 @@ class RegisterFormState extends State<RegisterForm> {
       setState(() {
         _progressBarState = false;
       });
-      _exceptionToast(result.hasException.toString().substring(16, 35));
+      _errorScaffold(result.hasException.toString().substring(16, 35));
     } else if (!result.hasException && !result.loading) {
       setState(() {
         _progressBarState = true;
@@ -112,7 +111,7 @@ class RegisterFormState extends State<RegisterForm> {
       setState(() {
         _progressBarState = false;
       });
-      _exceptionToast(result.exception.toString().substring(16, 35));
+      _errorScaffold(result.exception.toString().substring(16, 35));
     } else if (!result.hasException && !result.loading) {
       setState(() {
         _progressBarState = true;
@@ -173,47 +172,48 @@ class RegisterFormState extends State<RegisterForm> {
                 AutofillGroup(
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
-                        autofillHints: <String>[AutofillHints.givenName],
-                        textInputAction: TextInputAction.next,
-                        textCapitalization: TextCapitalization.words,
-                        controller: _firstNameController,
-                        validator: (value) =>
-                            Validator.validateFirstName(value),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white,width: 5),
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white,width: 2),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          prefixIcon: Icon(Icons.person, color: Colors.white),
-                          labelText: "First Name",
-                          labelStyle: TextStyle(color: Colors.white),
-                          alignLabelWithHint: true,
-                          hintText: 'Earl',
-                          hintStyle: TextStyle(color: Colors.grey),
-                        ),
-                        onSaved: (value) {
-                          model.firstName = value;
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      // TextFormField(
+                      //   autofillHints: <String>[AutofillHints.givenName],
+                      //   textInputAction: TextInputAction.next,
+                      //   textCapitalization: TextCapitalization.words,
+                      //   controller: _firstNameController,
+                      //   validator: (value) =>
+                      //       Validator.validateFirstName(value),
+                      //   textAlign: TextAlign.left,
+                      //   style: TextStyle(color: Colors.white),
+                      //   decoration: InputDecoration(
+                      //     enabledBorder: OutlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.white,width: 5),
+                      //       borderRadius: BorderRadius.circular(15.0),
+                      //     ),
+                      //     focusedBorder: OutlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.white,width: 2),
+                      //       borderRadius: BorderRadius.circular(20.0),
+                      //     ),
+                      //     prefixIcon: Icon(Icons.person, color: Colors.white),
+                      //     labelText: "First Name",
+                      //     labelStyle: TextStyle(color: Colors.white),
+                      //     alignLabelWithHint: true,
+                      //     hintText: 'Earl',
+                      //     hintStyle: TextStyle(color: Colors.grey),
+                      //   ),
+                      //   onSaved: (value) {
+                      //     model.firstName = value;
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
                       TextFormField(
                         autofillHints: <String>[AutofillHints.familyName],
                         textInputAction: TextInputAction.next,
                         textCapitalization: TextCapitalization.words,
-                        controller: _lastNameController,
-                        validator: Validator.validateLastName,
+                        controller: _userNameController,
+                        validator: Validator.validateUserName,
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
+                          errorStyle: TextStyle(backgroundColor: Colors.black54,fontSize:14,fontWeight: FontWeight.bold),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white,width: 5),
                             borderRadius: BorderRadius.circular(15.0),
@@ -223,7 +223,7 @@ class RegisterFormState extends State<RegisterForm> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           prefixIcon: Icon(Icons.person_pin, color: Colors.white),
-                          labelText: "Last Name",
+                          labelText: "User Name",
                           labelStyle: TextStyle(color: Colors.white),
                           alignLabelWithHint: true,
                           hintText: 'John',
@@ -245,6 +245,7 @@ class RegisterFormState extends State<RegisterForm> {
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
+                          errorStyle: TextStyle(backgroundColor: Colors.black54,fontSize:14,fontWeight: FontWeight.bold),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white,width:5),
                             borderRadius: BorderRadius.circular(15.0),
@@ -254,7 +255,7 @@ class RegisterFormState extends State<RegisterForm> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           prefixIcon: Icon(Icons.email, color: Colors.white),
-                          labelText: "Email",
+                          labelText: "Email ID",
                           labelStyle: TextStyle(color: Colors.white),
                           alignLabelWithHint: true,
                           hintText: 'foo@bar.com',
@@ -276,7 +277,7 @@ class RegisterFormState extends State<RegisterForm> {
                         textAlign: TextAlign.left,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                         // errorStyle: TextStyle(backgroundColor: Colors.black87,fontWeight: FontWeight.bold),
+                          errorStyle: TextStyle(backgroundColor: Colors.black54,fontSize:14,fontWeight: FontWeight.bold),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white,width: 5),
                             borderRadius: BorderRadius.circular(15.0),
@@ -314,6 +315,36 @@ class RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                       SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        autofillHints: <String>[AutofillHints.password],
+                        obscureText: true,
+                        focusNode: confirmPassField,
+                        validator: (value) => Validator.validatePasswordConfirm(
+                          _originalPasswordController.text,
+                          value,
+                        ),
+                        controller: _confirmPasswordController,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(backgroundColor: Colors.black54,fontSize:14,fontWeight: FontWeight.bold),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white,width: 5),
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white,width: 2),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          prefixIcon: Icon(Icons.lock, color: Colors.white),
+                          labelText: "Confirm Password",
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusColor: UIData.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
                         height: 10,
                       ),
                       FlutterPwValidator(
@@ -333,34 +364,7 @@ class RegisterFormState extends State<RegisterForm> {
                       SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                        autofillHints: <String>[AutofillHints.password],
-                        obscureText: true,
-                        focusNode: confirmPassField,
-                        validator: (value) => Validator.validatePasswordConfirm(
-                          _originalPasswordController.text,
-                          value,
-                        ),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white,width: 5),
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white,width: 2),
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          prefixIcon: Icon(Icons.lock, color: Colors.white),
-                          labelText: "Confirm Password",
-                          labelStyle: TextStyle(color: Colors.white),
-                          focusColor: UIData.primaryColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
+
                     ],
                   ),
                 ),
@@ -499,33 +503,54 @@ class RegisterFormState extends State<RegisterForm> {
     );*/
 
   //this method is called when the result is an exception
-  _exceptionToast(String msg) {
-    Widget toast = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        color: Colors.red,
+  // _exceptionToast(String msg) {
+  //   Widget toast = Container(
+  //     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 14.0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(25.0),
+  //       color: Colors.red,
+  //     ),
+  //     child: Row(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Expanded(
+  //           child: Text(
+  //             msg,
+  //             style: TextStyle(fontSize: 15.0, color: Colors.white),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   fToast.showToast(
+  //     child: toast,
+  //     gravity: ToastGravity.BOTTOM,
+  //     toastDuration: Duration(seconds: 5),
+  //   );
+  // }
+  _errorScaffold(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          msg,
+          style: TextStyle(fontSize: 15.0, color: Colors.white,fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+        action: SnackBarAction(
+          label: "OK",
+          textColor: Colors.white,
+          onPressed: (){
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Text(
-              msg,
-              style: TextStyle(fontSize: 15.0, color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
-
-    fToast.showToast(
-      child: toast,
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 5),
     );
   }
+
 
   //function toggles _obscureText value
   void _toggle() {

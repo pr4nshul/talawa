@@ -257,7 +257,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   child: TextFormField(
                     style: TextStyle(fontSize: 20),
                     keyboardType: TextInputType.name,
-                    validator: (value) => Validator.validateLastName(value),
+                    validator: (value) => Validator.validateUserName(value),
                     enableSuggestions: true,
                     cursorRadius: Radius.circular(10),
                     cursorColor: Colors.blue[800],
@@ -294,7 +294,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                   child: TextFormField(
                     style: TextStyle(fontSize: 20),
                     keyboardType: TextInputType.name,
-                    validator: (value) => Validator.validateLastName(value),
+                    validator: (value) => Validator.validateUserName(value),
                     enableSuggestions: true,
                     cursorRadius: Radius.circular(10),
                     cursorColor: Colors.blue[800],

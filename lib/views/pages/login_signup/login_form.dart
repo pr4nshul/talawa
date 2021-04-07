@@ -64,8 +64,7 @@ class LoginFormState extends State<LoginForm> {
       setState(() {
         _progressBarState = false;
       });
-      _errorScaffold(
-          'Connection Error. Make sure you are Online!');
+      _errorScaffold('Connection Error. Make sure you are Online!');
     } else if (result.hasException) {
       print(result.exception);
       setState(() {
@@ -370,13 +369,6 @@ class LoginFormState extends State<LoginForm> {
         ),
         duration: Duration(milliseconds: 500),
         backgroundColor: Colors.greenAccent[400],
-        // action: SnackBarAction(
-        //   label: "OK",
-        //   textColor: Colors.white,
-        //   onPressed: (){
-        //     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        //   },
-        //),
       ),
     );
   }

@@ -8,16 +8,16 @@ class Validator {
     return null;
   }
 
-  static String validateFirstName(String value) {
-    if (value.length == 0) {
-      return 'Firstname must not be left blank.';
-    }
-    return null;
-  }
+  // static String validateFirstName(String value) {
+  //   if (value.length == 0) {
+  //     return 'Firstname must not be left blank.';
+  //   }
+  //   return null;
+  // }
 
-  static String validateLastName(String value) {
+  static String validateUserName(String value) {
     if (value.length == 0) {
-      return 'Lastname must not be left blank.';
+      return 'User Name must not be left blank.';
     }
     return null;
   }
